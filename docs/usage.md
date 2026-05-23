@@ -1,14 +1,14 @@
-# Usage Manual
+# 使用手册
 
-## API Endpoints
+## API 端点
 
-### Health Check
+### 健康检查
 
 ```bash
 curl http://localhost:8000/health
 ```
 
-Response:
+响应：
 ```json
 {
   "status": "healthy",
@@ -25,16 +25,16 @@ Response:
 }
 ```
 
-### Synchronous Parsing
+### 同步解析
 
-Waits for the parsing to complete and returns the result in the same response.
+等待解析完成后在同一响应中返回结果。
 
 ```bash
 curl -X POST http://localhost:8000/file_parse \
   -F "files=@document.pdf"
 ```
 
-Response:
+响应：
 ```json
 {
   "task_id": "a029cbf5-...",
@@ -46,24 +46,24 @@ Response:
   "completed_at": "2026-05-23T03:19:41.938601+00:00",
   "results": {
     "document": {
-      "md_content": "# Parsed Content\n\n..."
+      "md_content": "# 解析内容\n\n..."
     }
   }
 }
 ```
 
-### Asynchronous Parsing
+### 异步解析
 
-Returns a task_id immediately; client polls for completion.
+立即返回 task_id，客户端轮询获取结果。
 
-**Step 1 - Submit task:**
+**第 1 步 — 提交任务：**
 
 ```bash
 curl -X POST http://localhost:8000/tasks \
   -F "files=@document.pdf"
 ```
 
-Response:
+响应：
 ```json
 {
   "task_id": "cf222e69-...",
@@ -75,103 +75,103 @@ Response:
 }
 ```
 
-**Step 2 - Check status:**
+**第 2 步 — 查询状态：**
 
 ```bash
 curl http://localhost:8000/tasks/{task_id}
 ```
 
-**Step 3 - Get result (when status is "completed"):**
+**第 3 步 — 获取结果（状态为 "completed" 时）：**
 
 ```bash
 curl http://localhost:8000/tasks/{task_id}/result
 ```
 
-## Request Parameters
+## 请求参数
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `files` | file[] | **required** | PDF, image, DOCX, PPTX, or XLSX files |
-| `backend` | string | `hybrid-auto-engine` | Parsing backend (see below) |
-| `lang_list` | string[] | `["ch"]` | OCR language hints |
-| `parse_method` | string | `auto` | `auto`, `txt`, or `ocr` |
-| `formula_enable` | bool | `true` | Enable formula parsing |
-| `table_enable` | bool | `true` | Enable table parsing |
-| `image_analysis` | bool | `true` | Enable image/chart analysis (VLM/hybrid) |
-| `return_md` | bool | `true` | Return markdown content |
-| `return_middle_json` | bool | `false` | Return middle JSON |
-| `return_model_output` | bool | `false` | Return model output JSON |
-| `return_content_list` | bool | `false` | Return content list JSON |
-| `return_images` | bool | `false` | Return extracted images |
-| `response_format_zip` | bool | `false` | Return as ZIP instead of JSON |
-| `start_page_id` | int | `0` | Starting page (0-indexed) |
-| `end_page_id` | int | `99999` | Ending page (0-indexed) |
+| 参数 | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| `files` | file[] | **必填** | PDF、图片、DOCX、PPTX 或 XLSX 文件 |
+| `backend` | string | `hybrid-auto-engine` | 解析后端（见下方） |
+| `lang_list` | string[] | `["ch"]` | OCR 语言提示 |
+| `parse_method` | string | `auto` | `auto`、`txt` 或 `ocr` |
+| `formula_enable` | bool | `true` | 启用公式解析 |
+| `table_enable` | bool | `true` | 启用表格解析 |
+| `image_analysis` | bool | `true` | 启用图片/图表分析（VLM/混合后端） |
+| `return_md` | bool | `true` | 返回 Markdown 内容 |
+| `return_middle_json` | bool | `false` | 返回中间 JSON |
+| `return_model_output` | bool | `false` | 返回模型输出 JSON |
+| `return_content_list` | bool | `false` | 返回内容列表 JSON |
+| `return_images` | bool | `false` | 返回提取的图片 |
+| `response_format_zip` | bool | `false` | 以 ZIP 格式返回（而非 JSON） |
+| `start_page_id` | int | `0` | 起始页码（从 0 开始） |
+| `end_page_id` | int | `99999` | 结束页码（从 0 开始） |
 
-### Backend Options
+### 后端选项
 
-| Backend | Description | GPU | Languages |
-|---------|-------------|-----|-----------|
-| `pipeline` | Traditional pipeline, hallucination-free | Optional | Multi-language |
-| `vlm-auto-engine` | VLM via local GPU | Required | Chinese, English |
-| `vlm-http-client` | VLM via remote server | No | Chinese, English |
-| `hybrid-auto-engine` | Pipeline + VLM hybrid (**default**) | Required | Multi-language |
-| `hybrid-http-client` | Hybrid via remote server | No | Multi-language |
+| 后端 | 说明 | 是否需要 GPU | 支持语言 |
+|------|------|-------------|---------|
+| `pipeline` | 传统流水线，无幻觉 | 可选 | 多语言 |
+| `vlm-auto-engine` | 通过本地 GPU 运行 VLM | 需要 | 中英文 |
+| `vlm-http-client` | 通过远程服务器运行 VLM | 不需要 | 中英文 |
+| `hybrid-auto-engine` | Pipeline + VLM 混合（**默认**） | 需要 | 多语言 |
+| `hybrid-http-client` | 通过远程服务器运行混合模式 | 不需要 | 多语言 |
 
-### Language Options
+### 语言选项
 
-Common `lang_list` values:
+常用 `lang_list` 值：
 
-| Code | Languages |
-|------|-----------|
-| `ch` | Chinese, English, Chinese Traditional |
-| `en` | English |
-| `japan` | Chinese, English, Chinese Traditional, Japanese |
-| `korean` | Korean, English |
-| `latin` | French, German, Italian, Spanish, Portuguese, etc. |
-| `arabic` | Arabic, Persian, Urdu, etc. |
-| `cyrillic` | Russian, Ukrainian, Bulgarian, etc. |
+| 代码 | 语言 |
+|------|------|
+| `ch` | 中文、英文、繁体中文 |
+| `en` | 英文 |
+| `japan` | 中文、英文、繁体中文、日文 |
+| `korean` | 韩文、英文 |
+| `latin` | 法文、德文、意大利文、西班牙文、葡萄牙文等 |
+| `arabic` | 阿拉伯文、波斯文、乌尔都文等 |
+| `cyrillic` | 俄文、乌克兰文、保加利亚文等 |
 
-## Usage Examples
+## 使用示例
 
-### Parse with specific backend
+### 指定后端解析
 
 ```bash
-# Pipeline-only (no GPU required, but slower)
+# 仅 Pipeline（无需 GPU，但较慢）
 curl -X POST http://localhost:8000/file_parse \
   -F "files=@doc.pdf" \
   -F "backend=pipeline"
 
-# VLM auto engine (GPU required)
+# VLM 自动引擎（需要 GPU）
 curl -X POST http://localhost:8000/file_parse \
   -F "files=@doc.pdf" \
   -F "backend=vlm-auto-engine"
 ```
 
-### Parse specific pages
+### 解析指定页面
 
 ```bash
-# Parse pages 0-5 only
+# 仅解析第 0-5 页
 curl -X POST http://localhost:8000/file_parse \
   -F "files=@doc.pdf" \
   -F "start_page_id=0" \
   -F "end_page_id=5"
 ```
 
-### Parse with language hint
+### 指定语言提示
 
 ```bash
-# For English documents
+# 英文文档
 curl -X POST http://localhost:8000/file_parse \
   -F "files=@doc.pdf" \
   -F "lang_list=en"
 
-# For Japanese documents
+# 日文文档
 curl -X POST http://localhost:8000/file_parse \
   -F "files=@doc.pdf" \
   -F "lang_list=japan"
 ```
 
-### Disable formula/table parsing
+### 禁用公式/表格解析
 
 ```bash
 curl -X POST http://localhost:8000/file_parse \
@@ -180,7 +180,7 @@ curl -X POST http://localhost:8000/file_parse \
   -F "table_enable=false"
 ```
 
-### Get all output formats
+### 获取所有输出格式
 
 ```bash
 curl -X POST http://localhost:8000/file_parse \
@@ -192,14 +192,14 @@ curl -X POST http://localhost:8000/file_parse \
   -F "response_format_zip=true"
 ```
 
-### Python client example
+### Python 客户端示例
 
 ```python
 import requests
 
 API_URL = "http://localhost:8000"
 
-# Synchronous parsing
+# 同步解析
 with open("document.pdf", "rb") as f:
     response = requests.post(
         f"{API_URL}/file_parse",
@@ -209,7 +209,7 @@ with open("document.pdf", "rb") as f:
     result = response.json()
     print(result["results"]["document"]["md_content"])
 
-# Asynchronous parsing
+# 异步解析
 with open("document.pdf", "rb") as f:
     submit = requests.post(
         f"{API_URL}/tasks",
@@ -225,18 +225,18 @@ while True:
         print(result["results"]["document"]["md_content"])
         break
     elif status["status"] == "failed":
-        print("Parsing failed:", status.get("error"))
+        print("解析失败:", status.get("error"))
         break
     time.sleep(2)
 ```
 
-## Stress Testing
+## 压力测试
 
-### Sequential Latency Test
+### 顺序延迟测试
 
 ```bash
 #!/bin/bash
-# Measure per-file parsing latency sequentially
+# 逐个测量每个文件的解析延迟
 for pdf in pdf/*.pdf; do
     start=$(date +%s%N)
     curl -s -X POST http://localhost:8000/file_parse -F "files=@$pdf" > /dev/null
@@ -246,11 +246,11 @@ for pdf in pdf/*.pdf; do
 done
 ```
 
-### Concurrent Throughput Test
+### 并发吞吐量测试
 
 ```bash
 #!/bin/bash
-# Submit all PDFs at once and measure total throughput
+# 同时提交所有 PDF，测量总吞吐量
 TASK_IDS=()
 for pdf in pdf/*.pdf; do
     resp=$(curl -s -X POST http://localhost:8000/tasks -F "files=@$pdf")
@@ -258,7 +258,7 @@ for pdf in pdf/*.pdf; do
     TASK_IDS+=("$tid")
 done
 
-# Poll until all complete
+# 轮询直到全部完成
 while true; do
     all_done=true
     for tid in "${TASK_IDS[@]}"; do
@@ -272,7 +272,7 @@ while true; do
 done
 ```
 
-### Python Stress Test Script
+### Python 压力测试脚本
 
 ```python
 import requests, time, statistics, concurrent.futures
@@ -290,12 +290,12 @@ def parse_pdf(pdf_path):
     elapsed = time.time() - start
     return {"file": pdf_path, "elapsed": elapsed, "status": resp.json().get("status")}
 
-# Concurrent test with 5 workers
+# 使用 5 个并发 worker 测试
 with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
     futures = [executor.submit(parse_pdf, pdf) for pdf in PDF_FILES * 3]
     results = [f.result() for f in concurrent.futures.as_completed(futures)]
 
 times = [r["elapsed"] for r in results if r["status"] == "completed"]
-print(f"Avg: {statistics.mean(times):.2f}s")
-print(f"Throughput: {len(times) / sum(times):.2f} docs/s")
+print(f"平均: {statistics.mean(times):.2f}s")
+print(f"吞吐量: {len(times) / sum(times):.2f} 文档/秒")
 ```

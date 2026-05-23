@@ -1,68 +1,68 @@
-# Benchmark Performance Report
+# 性能基准测试报告
 
-## Test Environment
+## 测试环境
 
-| Item | Value |
-|------|-------|
-| **Machine** | CVM (Tencent Cloud Virtual Machine) |
-| **OS** | Ubuntu 22.04.5 LTS |
-| **Kernel** | 5.15.0-171-generic |
-| **CPU** | AMD EPYC 9K65 192-Core (16 cores / 32 threads) |
-| **Memory** | 92 GB DDR5 |
+| 项目 | 值 |
+|------|-----|
+| **机型** | CVM（腾讯云云服务器） |
+| **操作系统** | Ubuntu 22.04.5 LTS |
+| **内核** | 5.15.0-171-generic |
+| **CPU** | AMD EPYC 9K65 192-Core（16 核 / 32 线程） |
+| **内存** | 92 GB DDR5 |
 | **GPU** | NVIDIA RTX 5880 Ada Generation |
-| **GPU VRAM** | 46,068 MiB |
-| **NVIDIA Driver** | 570.158.01 |
+| **GPU 显存** | 46,068 MiB |
+| **NVIDIA 驱动** | 570.158.01 |
 | **CUDA** | 12.8 |
-| **Disk** | 493 GB SSD |
+| **磁盘** | 493 GB SSD |
 | **Docker** | 29.5.2 |
 | **MinerU** | 3.1.15 |
 | **vLLM** | 0.11.2+cu129 |
-| **VLM Model** | MinerU2.5-Pro-2604-1.2B (Qwen2VL) |
-| **Parsing Backend** | hybrid-auto-engine (default) |
+| **VLM 模型** | MinerU2.5-Pro-2604-1.2B (Qwen2VL) |
+| **解析后端** | hybrid-auto-engine（默认） |
 
-## Test Methodology
+## 测试方法
 
-### Test Dataset
+### 测试数据集
 
-19 unique PDF documents from `pdf/` directory, primarily CVPR 2020 academic papers:
+来自 `pdf/` 目录的 19 个独立 PDF 文档，主要为 CVPR 2020 学术论文：
 
-| Size Category | Count | Size Range |
-|---------------|-------|------------|
-| Small (<2 MB) | 8 | 631 KB - 1.9 MB |
-| Medium (2-5 MB) | 7 | 2.0 MB - 4.8 MB |
-| Large (>5 MB) | 4 | 5.3 MB - 9.8 MB |
+| 大小分类 | 数量 | 大小范围 |
+|---------|------|---------|
+| 小文件（<2 MB） | 8 | 631 KB - 1.9 MB |
+| 中文件（2-5 MB） | 7 | 2.0 MB - 4.8 MB |
+| 大文件（>5 MB） | 4 | 5.3 MB - 9.8 MB |
 
-### Test Scenarios
+### 测试场景
 
-1. **Sequential Single-Request Latency**: Send one request at a time, measure per-file latency
-2. **Concurrent Async Throughput**: Submit all 19 PDFs simultaneously via async API, measure total throughput
-3. **GPU Utilization**: Monitor VRAM usage, GPU compute utilization, and power draw
+1. **顺序单请求延迟**：逐个发送请求，测量每个文件的延迟
+2. **并发异步吞吐量**：同时提交 19 个 PDF 到异步 API，测量总吞吐量
+3. **GPU 利用率**：监控显存使用、GPU 计算利用率和功耗
 
-### Test Procedure
+### 测试流程
 
-1. Start the MinerU API container (`mineru-api`, profile `api`)
-2. Send one warmup request to trigger lazy model loading
-3. Run sequential benchmark: parse each PDF one at a time via `POST /file_parse`
-4. Run concurrent benchmark: submit all PDFs via `POST /tasks` simultaneously, poll until completion
-5. Record GPU metrics via `nvidia-smi`
+1. 启动 MinerU API 容器（`mineru-api`，profile `api`）
+2. 发送预热请求触发模型惰性加载
+3. 运行顺序基准测试：通过 `POST /file_parse` 逐个解析每个 PDF
+4. 运行并发基准测试：通过 `POST /tasks` 同时提交所有 PDF，轮询直到完成
+5. 通过 `nvidia-smi` 记录 GPU 指标
 
-## Performance Results
+## 性能结果
 
-### 1. Sequential Single-Request Latency
+### 1. 顺序单请求延迟
 
-| Metric | Value |
-|--------|-------|
-| Total files | 19 |
-| Total time | 164.95s |
-| **Average** | **8.68s** |
-| **Median** | **8.32s** |
-| Min | 6.26s |
-| Max | 11.63s |
+| 指标 | 值 |
+|------|-----|
+| 总文件数 | 19 |
+| 总耗时 | 164.95s |
+| **平均延迟** | **8.68s** |
+| **中位数** | **8.32s** |
+| 最小值 | 6.26s |
+| 最大值 | 11.63s |
 
-#### Per-File Results
+#### 逐文件结果
 
-| # | File | Size | Latency | MD Length | Status |
-|---|------|------|---------|-----------|--------|
+| # | 文件 | 大小 | 延迟 | MD 长度 | 状态 |
+|---|------|------|------|---------|------|
 | 1 | 2001.00309v3.pdf | 4,837 KB | 6.26s | 55,408 | completed |
 | 2 | 2002.10187v1.pdf | 1,945 KB | 10.80s | 53,736 | completed |
 | 3 | 2003.07540v1.pdf | 3,148 KB | 9.02s | 57,705 | completed |
@@ -83,153 +83,153 @@
 | 18 | Zhang_Interactive...pdf | 2,917 KB | 7.80s | 56,921 | completed |
 | 19 | siamrcnn.pdf | 3,473 KB | 9.73s | 68,408 | completed |
 
-#### Latency by File Size
+#### 按文件大小的延迟分布
 
-| Size Category | Count | Avg Latency | Min | Max |
-|---------------|-------|-------------|-----|-----|
+| 大小分类 | 数量 | 平均延迟 | 最小值 | 最大值 |
+|---------|------|---------|--------|--------|
 | <2 MB | 8 | 9.03s | 7.17s | 10.80s |
 | 2-5 MB | 7 | 8.09s | 6.26s | 9.73s |
 | >5 MB | 4 | 9.03s | 7.49s | 11.63s |
 
-**Observation**: Latency is relatively consistent across file sizes (6-12s). The hybrid-auto-engine backend processes each page through both pipeline and VLM stages, so page count and content complexity matter more than file size.
+**观察**：不同文件大小的延迟相对一致（6-12 秒）。hybrid-auto-engine 后端对每页都进行 pipeline 和 VLM 两个阶段的处理，因此页数和内容复杂度比文件大小影响更大。
 
-### 2. Concurrent Async Throughput
+### 2. 并发异步吞吐量
 
-| Metric | Value |
-|--------|-------|
-| Total submitted | 19 |
-| **Completed** | **19/19 (100%)** |
-| Failed | 0 |
-| Timeout | 0 |
-| Submit time | 0.59s |
-| **Total wall time** | **73.62s** |
-| Avg completion time | 39.11s |
-| **Throughput** | **0.258 docs/s** |
+| 指标 | 值 |
+|------|-----|
+| 提交总数 | 19 |
+| **完成数** | **19/19（100%）** |
+| 失败数 | 0 |
+| 超时数 | 0 |
+| 提交耗时 | 0.59s |
+| **总挂钟时间** | **73.62s** |
+| 平均完成时间 | 39.11s |
+| **吞吐量** | **0.258 文档/秒** |
 
-#### Sequential vs Concurrent Comparison
+#### 顺序 vs 并发对比
 
-| Mode | Total Time | Avg Per-Doc | Throughput |
-|------|-----------|-------------|------------|
-| Sequential (1 by 1) | 164.95s | 8.68s | 0.115 docs/s |
-| Concurrent (19 at once) | 73.62s | 39.11s* | 0.258 docs/s |
+| 模式 | 总耗时 | 平均每文档 | 吞吐量 |
+|------|--------|-----------|--------|
+| 顺序（逐个） | 164.95s | 8.68s | 0.115 文档/秒 |
+| 并发（19 个同时） | 73.62s | 39.11s* | 0.258 文档/秒 |
 
-*Note: Avg completion time in concurrent mode measures from submit to completion, including queue wait time. The actual processing time per document is similar to sequential, but parallelism allows overlapping.*
+*注：并发模式的平均完成时间从提交开始计算，包含排队等待时间。每个文档的实际处理时间与顺序模式相近，但并行性允许任务重叠。*
 
-**Concurrent speedup**: 2.24x (73.62s vs 164.95s for the same 19 documents)
+**并发加速比**：2.24 倍（同样 19 个文档，73.62 秒 vs 164.95 秒）
 
-### 3. GPU Utilization
+### 3. GPU 利用率
 
-| Metric | Idle | Under Load |
-|--------|------|------------|
-| VRAM Used | 0 MiB | 25,370 - 25,552 MiB |
-| VRAM Total | 46,068 MiB | 46,068 MiB |
-| VRAM Utilization | 0% | ~55% |
-| GPU Compute | 0% | Variable (spikes during inference) |
-| Power Draw | 9W | 65-71W |
-| Power Limit | 285W | 285W |
+| 指标 | 空闲 | 负载下 |
+|------|------|--------|
+| 显存使用 | 0 MiB | 25,370 - 25,552 MiB |
+| 显存总量 | 46,068 MiB | 46,068 MiB |
+| 显存利用率 | 0% | 约 55% |
+| GPU 计算 | 0% | 变化（推理时脉冲式） |
+| 功耗 | 9W | 65-71W |
+| 功耗上限 | 285W | 285W |
 
-**Key observations**:
-- The vLLM engine allocates ~23 GB VRAM at startup for the Qwen2VL model
-- Pipeline models add ~2-3 GB peak when loaded on-demand
-- Total VRAM usage stays at ~55% (25 GB / 46 GB), leaving headroom for larger batch sizes
-- GPU compute utilization is bursty (spikes during VLM inference, idle during I/O)
-- Power consumption is moderate (65-71W vs 285W max), indicating the workload is not fully compute-bound
+**关键观察**：
+- vLLM 引擎在启动时为 Qwen2VL 模型分配约 23 GB 显存
+- Pipeline 模型按需加载时峰值增加约 2-3 GB
+- 总显存使用保持在约 55%（25 GB / 46 GB），仍有余量支持更大批量
+- GPU 计算利用率呈脉冲式（VLM 推理时峰值，I/O 时空闲）
+- 功耗适中（65-71W vs 285W 上限），说明工作负载并非完全计算密集型
 
-### 4. Cold Start vs Warm Latency
+### 4. 冷启动 vs 热启动延迟
 
-Using a 2.2 MB PDF (Attention Is All You Need):
+使用 2.2 MB PDF（Attention Is All You Need）测试：
 
-| Metric | Cold Start | Warm (avg of 3) |
-|--------|-----------|-----------------|
-| Latency | 14.96s | 6.46s |
-| Stdev | - | 0.05s |
+| 指标 | 冷启动 | 热启动（3 次平均） |
+|------|--------|-------------------|
+| 延迟 | 14.96s | 6.46s |
+| 标准差 | - | 0.05s |
 
-**Cold start overhead**: ~8.5s for model loading and CUDA graph compilation on first request.
+**冷启动开销**：约 8.5 秒，用于模型加载和 CUDA graph 编译。
 
-## Performance Summary
+## 性能总结
 
-| Metric | Value |
-|--------|-------|
-| **Avg sequential latency** | **8.68s / doc** |
-| **Concurrent throughput** | **0.258 docs/s** |
-| **Max concurrent requests** | 3 |
-| **Cold start latency** | ~15s |
-| **Warm latency** | ~6.5s |
-| **GPU VRAM usage** | ~55% (25/46 GB) |
-| **Success rate** | 100% (19/19) |
+| 指标 | 值 |
+|------|-----|
+| **平均顺序延迟** | **8.68 秒/文档** |
+| **并发吞吐量** | **0.258 文档/秒** |
+| **最大并发请求数** | 3 |
+| **冷启动延迟** | 约 15 秒 |
+| **热启动延迟** | 约 6.5 秒 |
+| **GPU 显存使用** | 约 55%（25/46 GB） |
+| **成功率** | 100%（19/19） |
 
-## Bottleneck Analysis
+## 瓶颈分析
 
-1. **vLLM Inference**: The VLM (Qwen2VL 1.2B) inference is the primary latency contributor. Each page requires a forward pass through the model.
+1. **vLLM 推理**：VLM（Qwen2VL 1.2B）推理是主要延迟来源。每页需要一次模型前向传播。
 
-2. **Max Concurrent = 3**: The default concurrency limit of 3 prevents overload but caps throughput. Increasing `max_concurrent_requests` could improve throughput if VRAM allows.
+2. **最大并发数 = 3**：默认并发限制 3 可防止过载但也限制了吞吐量。如显存允许，增大 `max_concurrent_requests` 可提升吞吐量。
 
-3. **I/O Bound**: Pipeline models (OCR, layout) involve CPU+GPU operations with significant I/O, creating bursty GPU utilization.
+3. **I/O 密集**：Pipeline 模型（OCR、版面检测）涉及 CPU+GPU 操作和大量 I/O，导致 GPU 利用率呈脉冲式。
 
-4. **File Size vs Latency**: Weak correlation (r ≈ 0.1). Content complexity (page count, number of images/tables) is a stronger predictor than raw file size.
+4. **文件大小 vs 延迟**：相关性较弱（r ≈ 0.1）。内容复杂度（页数、图片/表格数量）比原始文件大小是更强的预测因子。
 
-## Local vs TKE Deployment Comparison
+## 本地 vs TKE 部署对比
 
-The same MinerU service was also deployed on TKE (Tencent Kubernetes Engine) with an internal CLB (Classic Load Balancer). The TKE deployment uses the same GPU and Docker image but adds a network layer (Kubernetes service + CLB).
+同样的 MinerU 服务也部署在 TKE（腾讯云容器服务）上，使用内网 CLB（传统负载均衡器）。TKE 部署使用相同的 GPU 和 Docker 镜像，但增加了网络层（Kubernetes 服务 + CLB）。
 
-### TKE Stress Test Results (3 rounds, 22 PDFs, via CLB)
+### TKE 压力测试结果（3 轮，22 个 PDF，通过 CLB）
 
-| Metric | Value |
-|--------|-------|
-| API Endpoint | `http://172.21.128.65` (Internal CLB) |
-| Total tasks | 66 (3 rounds x 22 PDFs) |
-| **Completed** | **66/66 (100%)** |
-| Failed | 0 |
-| Overall time | 267.2s |
-| **Avg time per file** | **4.05s** |
-| **Throughput** | **14.82 files/min** |
+| 指标 | 值 |
+|------|-----|
+| API 端点 | `http://172.21.128.65`（内网 CLB） |
+| 总任务数 | 66（3 轮 x 22 个 PDF） |
+| **完成数** | **66/66（100%）** |
+| 失败数 | 0 |
+| 总耗时 | 267.2s |
+| **平均每文件耗时** | **4.05s** |
+| **吞吐量** | **14.82 文件/分钟** |
 
-### Local Stress Test Results (3 rounds, 22 PDFs, direct Docker)
+### 本地压力测试结果（3 轮，22 个 PDF，直连 Docker）
 
-| Metric | Value |
-|--------|-------|
-| API Endpoint | `http://localhost:8000` |
-| Total tasks | 66 (3 rounds x 22 PDFs) |
-| **Completed** | **66/66 (100%)** |
-| Failed | 0 |
-| Overall time | 218.8s |
-| **Avg time per file** | **3.32s** |
-| **Throughput** | **18.1 files/min** |
+| 指标 | 值 |
+|------|-----|
+| API 端点 | `http://localhost:8000` |
+| 总任务数 | 66（3 轮 x 22 个 PDF） |
+| **完成数** | **66/66（100%）** |
+| 失败数 | 0 |
+| 总耗时 | 218.8s |
+| **平均每文件耗时** | **3.32s** |
+| **吞吐量** | **18.1 文件/分钟** |
 
-### GPU Metrics (Local, DCGM monitoring during stress test)
+### GPU 指标（本地，压力测试期间 DCGM 监控）
 
-| Metric | Avg | Min | Max |
-|--------|-----|-----|-----|
-| GPU Utilization | 68.8% | 0% | 100% |
-| Memory Utilization | 50.2% | 0% | 70% |
-| Memory Used | 22,937 MB | 22,935 MB | 22,937 MB |
-| Power Draw | 212.6W | 9.4W | 247.6W |
-| Temperature | 61.3°C | - | 72.0°C |
+| 指标 | 平均值 | 最小值 | 最大值 |
+|------|--------|--------|--------|
+| GPU 利用率 | 68.8% | 0% | 100% |
+| 显存利用率 | 50.2% | 0% | 70% |
+| 显存使用量 | 22,937 MB | 22,935 MB | 22,937 MB |
+| 功耗 | 212.6W | 9.4W | 247.6W |
+| 温度 | 61.3°C | - | 72.0°C |
 
-### Local vs TKE Comparison
+### 本地 vs TKE 对比
 
-| Metric | Local (Docker) | TKE (CLB) | Delta |
-|--------|---------------|-----------|-------|
-| Overall time | 218.8s | 267.2s | +22.1% |
-| Avg time per file | 3.32s | 4.05s | +22.0% |
-| Throughput (files/min) | 18.1 | 14.82 | -18.1% |
-| Success rate | 100% | 100% | 0% |
+| 指标 | 本地（Docker） | TKE（CLB） | 差异 |
+|------|---------------|-----------|------|
+| 总耗时 | 218.8s | 267.2s | +22.1% |
+| 平均每文件耗时 | 3.32s | 4.05s | +22.0% |
+| 吞吐量（文件/分钟） | 18.1 | 14.82 | -18.1% |
+| 成功率 | 100% | 100% | 0% |
 
-**Key finding**: TKE deployment via CLB adds ~22% latency overhead compared to local Docker access. This overhead comes from the additional network hops through Kubernetes service mesh and CLB. For latency-sensitive workloads, consider using pod-level access or hostNetwork.
+**关键发现**：TKE 部署通过 CLB 比本地 Docker 直连增加约 22% 的延迟开销。此开销来自 Kubernetes 服务网格和 CLB 的额外网络跳转。对于延迟敏感型工作负载，建议使用 Pod 级别访问或 hostNetwork。
 
-## Monitoring Screenshots
+## 监控截图
 
-DCGM monitoring dashboards captured during stress testing are available in `monitor/`:
+压力测试期间捕获的 DCGM 监控仪表板截图存放在 `monitor/` 目录：
 
-- `ScreenShot_2026-05-23_102027_775.png` - GPU utilization overview
-- `ScreenShot_2026-05-23_102149_527.png` - Memory and power metrics
-- `ScreenShot_2026-05-23_102529_916.png` - Temperature and clock speed
+- `ScreenShot_2026-05-23_102027_775.png` - GPU 利用率概览
+- `ScreenShot_2026-05-23_102149_527.png` - 显存和功耗指标
+- `ScreenShot_2026-05-23_102529_916.png` - 温度和时钟频率
 
-## Optimization Recommendations
+## 优化建议
 
-1. **Increase concurrency**: Raise `max_concurrent_requests` from 3 to 5-8, as VRAM headroom exists (~20 GB free)
-2. **Use `pipeline` backend for text-heavy PDFs**: Skip VLM inference when high-accuracy VLM output is not needed
-3. **Pre-warm the service**: Send a warmup request after deployment to eliminate cold start
-4. **Batch processing**: Use the async API for bulk processing to maximize throughput
-5. **GPU memory tuning**: If increasing concurrency, monitor VRAM and adjust `--gpu-memory-utilization` accordingly
-6. **TKE network optimization**: For TKE deployment, use hostNetwork or pod-level access to reduce CLB latency overhead
+1. **提高并发数**：将 `max_concurrent_requests` 从 3 提高到 5-8，显存仍有余量（约 20 GB 空闲）
+2. **纯文本 PDF 使用 `pipeline` 后端**：在不需要高精度 VLM 输出时跳过 VLM 推理
+3. **预热服务**：部署后发送预热请求以消除冷启动延迟
+4. **批量处理**：使用异步 API 进行批量处理以最大化吞吐量
+5. **GPU 显存调优**：如增加并发数，需监控显存并相应调整 `--gpu-memory-utilization`
+6. **TKE 网络优化**：TKE 部署可使用 hostNetwork 或 Pod 级别访问以减少 CLB 延迟开销

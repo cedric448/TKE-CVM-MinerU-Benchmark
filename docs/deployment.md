@@ -1,25 +1,25 @@
-# Deployment Guide
+# 部署指南
 
-## Environment Specification
+## 环境规格
 
-| Item | Value |
-|------|-------|
-| OS | Ubuntu 22.04.5 LTS |
-| Kernel | 5.15.0-171-generic |
-| CPU | AMD EPYC 9K65 192-Core (16 cores / 32 threads) |
-| Memory | 92 GB DDR5 |
-| GPU | NVIDIA RTX 5880 Ada Generation (46 GB VRAM) |
-| NVIDIA Driver | 570.158.01 |
-| CUDA Version | 12.8 |
-| Disk | 493 GB SSD |
+| 项目 | 值 |
+|------|-----|
+| 操作系统 | Ubuntu 22.04.5 LTS |
+| 内核 | 5.15.0-171-generic |
+| CPU | AMD EPYC 9K65 192-Core（16 核 / 32 线程） |
+| 内存 | 92 GB DDR5 |
+| GPU | NVIDIA RTX 5880 Ada Generation（46 GB 显存） |
+| NVIDIA 驱动 | 570.158.01 |
+| CUDA 版本 | 12.8 |
+| 磁盘 | 493 GB SSD |
 | Docker Engine | 29.5.2 |
 | Docker Compose | v5.1.4 |
 | Docker Buildx | v0.34.0 |
 
-## Step 1: Install Docker Engine
+## 第一步：安装 Docker Engine
 
 ```bash
-# Add Docker official apt repository
+# 添加 Docker 官方 apt 仓库
 install -m 0755 -d /etc/apt/keyrings
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
 chmod a+r /etc/apt/keyrings/docker.asc
@@ -32,10 +32,10 @@ apt-get update
 apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 ```
 
-## Step 2: Install NVIDIA Container Toolkit
+## 第二步：安装 NVIDIA Container Toolkit
 
 ```bash
-# Add NVIDIA repository
+# 添加 NVIDIA 仓库
 curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey \
   | gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
 
@@ -46,16 +46,16 @@ curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-contai
 apt-get update
 apt-get install -y nvidia-container-toolkit
 
-# Configure Docker to use NVIDIA runtime
+# 配置 Docker 使用 NVIDIA 运行时
 nvidia-ctk runtime configure --runtime=docker
 ```
 
-## Step 3: Configure Docker Proxy (China Mainland)
+## 第三步：配置 Docker 代理（中国大陆）
 
-If deploying from China mainland, configure proxy for faster downloads:
+在中国大陆部署时，需配置代理以加速下载：
 
 ```bash
-# Docker daemon proxy
+# Docker 守护进程代理
 cat > /etc/docker/daemon.json << 'EOF'
 {
     "runtimes": {
@@ -72,7 +72,7 @@ cat > /etc/docker/daemon.json << 'EOF'
 }
 EOF
 
-# Docker client proxy
+# Docker 客户端代理
 mkdir -p ~/.docker
 cat > ~/.docker/config.json << 'EOF'
 {
@@ -87,34 +87,34 @@ cat > ~/.docker/config.json << 'EOF'
 EOF
 ```
 
-Restart Docker daemon:
+重启 Docker 守护进程：
 
 ```bash
-# If using systemd
+# 使用 systemd 时
 systemctl restart docker
 
-# If running dockerd manually
+# 手动运行 dockerd 时
 pkill dockerd
 dockerd &
 ```
 
-## Step 4: Build MinerU Docker Image
+## 第四步：构建 MinerU Docker 镜像
 
-### Prepare Files
+### 准备文件
 
 ```bash
 mkdir -p /root/mineru/docker
 
-# Download official Dockerfile
+# 下载官方 Dockerfile
 curl -o /root/mineru/docker/Dockerfile \
   https://gcore.jsdelivr.net/gh/opendatalab/MinerU@master/docker/global/Dockerfile
 
-# Download official compose.yaml
+# 下载官方 compose.yaml
 curl -o /root/mineru/docker/compose.yaml \
   https://gcore.jsdelivr.net/gh/opendatalab/MinerU@master/docker/compose.yaml
 ```
 
-### Dockerfile Content
+### Dockerfile 内容
 
 ```dockerfile
 FROM vllm/vllm-openai:v0.11.2
@@ -137,54 +137,54 @@ RUN /bin/bash -c "mineru-models-download -s huggingface -m all"
 ENTRYPOINT ["/bin/bash", "-c", "export MINERU_MODEL_SOURCE=local && exec \"$@\"", "--"]
 ```
 
-### Build Command
+### 构建命令
 
 ```bash
-# Set proxy environment variables
+# 设置代理环境变量
 export http_proxy='http://127.0.0.1:1087'
 export https_proxy='http://127.0.0.1:1087'
 
-# Build with --network host for proxy passthrough
+# 使用 --network host 传递代理
 cd /root/mineru
 docker build --network host --progress=plain \
   -t mineru:latest \
   -f docker/Dockerfile docker/
 ```
 
-**Build time**: ~10-15 minutes with proxy, ~45+ minutes without proxy.
+**构建时间**：使用代理约 10-15 分钟，不使用代理约 45+ 分钟。
 
-**Image size**: 18.3 GB
+**镜像大小**：18.3 GB
 
-### Build Breakdown
+### 构建步骤分解
 
-| Step | Description | Time (with proxy) | Cacheable |
-|------|-------------|-------------------|-----------|
-| Base image pull | `vllm/vllm-openai:v0.11.2` | ~3 min | Yes |
-| apt-get | Fonts + libgl | ~1 min | Yes |
-| pip install | `mineru[core]>=3.0.0` (v3.1.15) | ~2 min | Yes |
-| Model download | 8 pipeline + VLM models | ~8 min | Yes |
+| 步骤 | 说明 | 耗时（使用代理） | 可缓存 |
+|------|------|-----------------|--------|
+| 基础镜像拉取 | `vllm/vllm-openai:v0.11.2` | 约 3 分钟 | 是 |
+| apt-get | 字体 + libgl | 约 1 分钟 | 是 |
+| pip install | `mineru[core]>=3.0.0`（v3.1.15） | 约 2 分钟 | 是 |
+| 模型下载 | 8 个 pipeline + VLM 模型 | 约 8 分钟 | 是 |
 
-## Step 5: Deploy Service
+## 第五步：部署服务
 
-### Using Docker Compose (Recommended)
+### 使用 Docker Compose（推荐）
 
 ```bash
 cd /root/mineru
 
-# Start API service (port 8000)
+# 启动 API 服务（端口 8000）
 docker compose -f docker/compose.yaml --profile api up -d
 
-# Or start OpenAI-compatible server (port 30000)
+# 或启动 OpenAI 兼容服务（端口 30000）
 docker compose -f docker/compose.yaml --profile openai-server up -d
 
-# Or start Gradio UI (port 7860)
+# 或启动 Gradio UI（端口 7860）
 docker compose -f docker/compose.yaml --profile gradio up -d
 
-# Or start Router (port 8002)
+# 或启动 Router（端口 8002）
 docker compose -f docker/compose.yaml --profile router up -d
 ```
 
-### Using Docker Run
+### 使用 Docker Run
 
 ```bash
 docker run -d \
@@ -199,53 +199,53 @@ docker run -d \
   mineru-api --host 0.0.0.0 --port 8000
 ```
 
-## Step 6: Verify Deployment
+## 第六步：验证部署
 
 ```bash
-# Check container status
+# 检查容器状态
 docker ps
 
-# Check health endpoint
+# 检查健康端点
 curl http://localhost:8000/health
 
-# Expected response:
+# 预期响应：
 # {"status":"healthy","version":"3.1.15","protocol_version":1,
 #  "queued_tasks":0,"processing_tasks":0,"max_concurrent_requests":3}
 
-# Test with a PDF
+# 使用 PDF 测试
 curl -X POST http://localhost:8000/file_parse \
   -F "files=@test.pdf"
 
-# Access Swagger UI
+# 访问 Swagger UI
 # http://localhost:8000/docs
 ```
 
-## Service Profiles
+## 服务配置文件
 
-| Profile | Port | Entry Point | Description |
-|---------|------|-------------|-------------|
-| `api` | 8000 | `mineru-api` | RESTful API with sync/async parsing |
-| `openai-server` | 30000 | `mineru-openai-server` | OpenAI-compatible API server |
-| `router` | 8002 | `mineru-router` | Multi-GPU request router |
-| `gradio` | 7860 | `mineru-gradio` | Web UI for interactive parsing |
+| Profile | 端口 | 入口命令 | 说明 |
+|---------|------|---------|------|
+| `api` | 8000 | `mineru-api` | RESTful API，支持同步/异步解析 |
+| `openai-server` | 30000 | `mineru-openai-server` | OpenAI 兼容 API 服务 |
+| `router` | 8002 | `mineru-router` | 多 GPU 请求路由器 |
+| `gradio` | 7860 | `mineru-gradio` | Web 交互式解析界面 |
 
-## Configuration Options
+## 配置选项
 
-### GPU Memory Utilization
+### GPU 显存利用率
 
-If encountering VRAM shortage, reduce the KV cache size:
+如遇显存不足，可降低 KV Cache 大小：
 
 ```yaml
-# In compose.yaml, add to the command section:
+# 在 compose.yaml 的 command 部分添加：
 command:
   --host 0.0.0.0
   --port 8000
-  --gpu-memory-utilization 0.5  # Default is ~0.9
+  --gpu-memory-utilization 0.5  # 默认约 0.9
 ```
 
-### Multi-GPU Support
+### 多 GPU 支持
 
-Modify `device_ids` in compose.yaml:
+修改 compose.yaml 中的 `device_ids`：
 
 ```yaml
 deploy:
@@ -253,13 +253,13 @@ deploy:
     reservations:
       devices:
         - driver: nvidia
-          device_ids: ["0", "1"]  # Use GPU 0 and 1
+          device_ids: ["0", "1"]  # 使用 GPU 0 和 1
           capabilities: [gpu]
 ```
 
-### SSRF Protection
+### SSRF 防护
 
-By default, when binding to `0.0.0.0`, MinerU disables `*-http-client` backends and `server_url` to prevent SSRF attacks. To enable them (only if the API is on a private network):
+默认情况下，绑定到 `0.0.0.0` 时 MinerU 会禁用 `*-http-client` 后端和 `server_url` 以防止 SSRF 攻击。如需启用（仅在私有网络中）：
 
 ```yaml
 command:
