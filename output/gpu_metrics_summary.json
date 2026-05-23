@@ -1,0 +1,30 @@
+{
+  "collection_start": "2026/05/22 21:09:59.712",
+  "collection_end": "2026/05/22 21:13:39.637",
+  "total_samples": 110,
+  "sample_interval_s": 2,
+  "gpu_utilization_pct": {
+    "avg": 68.8,
+    "max": 100.0,
+    "min": 0.0
+  },
+  "memory_utilization_pct": {
+    "avg": 50.2,
+    "max": 70.0,
+    "min": 0.0
+  },
+  "memory_used_mb": {
+    "avg": 22936.9,
+    "max": 22937.0,
+    "min": 22935.0
+  },
+  "power_draw_w": {
+    "avg": 212.6,
+    "max": 247.6,
+    "min": 9.4
+  },
+  "temperature_c": {
+    "avg": 61.3,
+    "max": 72.0
+  }
+}

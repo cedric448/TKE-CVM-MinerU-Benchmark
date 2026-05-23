@@ -1,0 +1,380 @@
+{
+  "test_type": "stress_test",
+  "num_rounds": 3,
+  "pdfs_per_round": 22,
+  "total_tasks": 66,
+  "completed": 66,
+  "failed": 0,
+  "overall_time_s": 218.8,
+  "avg_time_per_file_s": 3.32,
+  "throughput_files_per_min": 18.1,
+  "gpu_metrics": {
+    "collection_start": "2026/05/22 21:09:59.712",
+    "collection_end": "2026/05/22 21:13:39.637",
+    "total_samples": 110,
+    "sample_interval_s": 2,
+    "gpu_utilization_pct": {
+      "avg": 68.8,
+      "max": 100.0,
+      "min": 0.0
+    },
+    "memory_utilization_pct": {
+      "avg": 50.2,
+      "max": 70.0,
+      "min": 0.0
+    },
+    "memory_used_mb": {
+      "avg": 22936.9,
+      "max": 22937.0,
+      "min": 22935.0
+    },
+    "power_draw_w": {
+      "avg": 212.6,
+      "max": 247.6,
+      "min": 9.4
+    },
+    "temperature_c": {
+      "avg": 61.3,
+      "max": 72.0
+    }
+  },
+  "active_period_metrics": {
+    "gpu_util_pct_avg": 73.4,
+    "gpu_util_pct_max": 100.0,
+    "mem_util_pct_avg": 53.6,
+    "mem_util_pct_max": 70.0,
+    "active_samples": 103
+  },
+  "results": [
+    {
+      "filename": "2003.07540v1.pdf",
+      "status": "completed",
+      "elapsed": 9.058144092559814
+    },
+    {
+      "filename": "2001.00309v3.pdf",
+      "status": "completed",
+      "elapsed": 9.061089038848877
+    },
+    {
+      "filename": "2002.10187v1.pdf",
+      "status": "completed",
+      "elapsed": 9.06040096282959
+    },
+    {
+      "filename": "2004.01547v1.pdf",
+      "status": "completed",
+      "elapsed": 9.19514536857605
+    },
+    {
+      "filename": "2003.09163v2.pdf",
+      "status": "completed",
+      "elapsed": 9.19700813293457
+    },
+    {
+      "filename": "2006.04356v1.pdf",
+      "status": "completed",
+      "elapsed": 9.1949303150177
+    },
+    {
+      "filename": "Cao_D2Det_Towards_High_Quality_Object_Detection_and_Instance_Segmentation_CVPR_2020_paper.pdf",
+      "status": "completed",
+      "elapsed": 9.013269186019897
+    },
+    {
+      "filename": "Cao_D2Det_Towards_High_Quality_Object_Detection_and_Instance_Segmentation_CVPR_2020_paper (2).pdf",
+      "status": "completed",
+      "elapsed": 9.030738353729248
+    },
+    {
+      "filename": "Cao_D2Det_Towards_High_Quality_Object_Detection_and_Instance_Segmentation_CVPR_2020_paper (1).pdf",
+      "status": "completed",
+      "elapsed": 9.089096546173096
+    },
+    {
+      "filename": "Chibane_Implicit_Functions_in_Feature_Space_for_3D_Shape_Reconstruction_and_CVPR_2020_paper.pdf",
+      "status": "completed",
+      "elapsed": 6.026872158050537
+    },
+    {
+      "filename": "He_PVN3D_A_Deep_Point-Wise_3D_Keypoints_Voting_Network_for_6DoF_CVPR_2020_paper.pdf",
+      "status": "completed",
+      "elapsed": 12.019221782684326
+    },
+    {
+      "filename": "Guo_AugFPN_Improving_Multi-Scale_Feature_Learning_for_Object_Detection_CVPR_2020_paper.pdf",
+      "status": "completed",
+      "elapsed": 12.078483581542969
+    },
+    {
+      "filename": "MSeg.pdf",
+      "status": "completed",
+      "elapsed": 12.064745664596558
+    },
+    {
+      "filename": "Niemeyer2020CVPR.pdf",
+      "status": "completed",
+      "elapsed": 9.064199209213257
+    },
+    {
+      "filename": "Mir_Learning_to_Transfer_Texture_From_Clothing_Images_to_3D_Humans_CVPR_2020_paper.pdf",
+      "status": "completed",
+      "elapsed": 9.06522250175476
+    },
+    {
+      "filename": "Patel_TailorNet_Predicting_Clothing_in_3D_as_a_Function_of_Human_CVPR_2020_paper.pdf",
+      "status": "completed",
+      "elapsed": 6.041374683380127
+    },
+    {
+      "filename": "Peng_IDA-3D_Instance-Depth-Aware_3D_Object_Detection_From_Stereo_Vision_for_Autonomous_CVPR_2020_paper.pdf",
+      "status": "completed",
+      "elapsed": 6.011818885803223
+    },
+    {
+      "filename": "Wang_ContourNet_Taking_a_Further_Step_Toward_Accurate_Arbitrary-Shaped_Scene_Text_CVPR_2020_paper.pdf",
+      "status": "completed",
+      "elapsed": 6.131668567657471
+    },
+    {
+      "filename": "Wang_BiFuse_Monocular_360_Depth_Estimation_via_Bi-Projection_Fusion_CVPR_2020_paper.pdf",
+      "status": "completed",
+      "elapsed": 12.261525630950928
+    },
+    {
+      "filename": "Zhang_Interactive_Object_Segmentation_With_Inside-Outside_Guidance_CVPR_2020_paper (1).pdf",
+      "status": "completed",
+      "elapsed": 9.231757640838623
+    },
+    {
+      "filename": "Zhang_Interactive_Object_Segmentation_With_Inside-Outside_Guidance_CVPR_2020_paper.pdf",
+      "status": "completed",
+      "elapsed": 9.167564392089844
+    },
+    {
+      "filename": "siamrcnn.pdf",
+      "status": "completed",
+      "elapsed": 12.022413969039917
+    },
+    {
+      "filename": "2003.07540v1.pdf",
+      "status": "completed",
+      "elapsed": 9.18839955329895
+    },
+    {
+      "filename": "2002.10187v1.pdf",
+      "status": "completed",
+      "elapsed": 9.190550565719604
+    },
+    {
+      "filename": "2001.00309v3.pdf",
+      "status": "completed",
+      "elapsed": 9.192661762237549
+    },
+    {
+      "filename": "2006.04356v1.pdf",
+      "status": "completed",
+      "elapsed": 9.092424392700195
+    },
+    {
+      "filename": "2003.09163v2.pdf",
+      "status": "completed",
+      "elapsed": 9.096250295639038
+    },
+    {
+      "filename": "2004.01547v1.pdf",
+      "status": "completed",
+      "elapsed": 9.095852851867676
+    },
+    {
+      "filename": "Cao_D2Det_Towards_High_Quality_Object_Detection_and_Instance_Segmentation_CVPR_2020_paper (2).pdf",
+      "status": "completed",
+      "elapsed": 9.04174280166626
+    },
+    {
+      "filename": "Cao_D2Det_Towards_High_Quality_Object_Detection_and_Instance_Segmentation_CVPR_2020_paper (1).pdf",
+      "status": "completed",
+      "elapsed": 9.043457984924316
+    },
+    {
+      "filename": "Cao_D2Det_Towards_High_Quality_Object_Detection_and_Instance_Segmentation_CVPR_2020_paper.pdf",
+      "status": "completed",
+      "elapsed": 9.041452407836914
+    },
+    {
+      "filename": "Chibane_Implicit_Functions_in_Feature_Space_for_3D_Shape_Reconstruction_and_CVPR_2020_paper.pdf",
+      "status": "completed",
+      "elapsed": 6.012872219085693
+    },
+    {
+      "filename": "Guo_AugFPN_Improving_Multi-Scale_Feature_Learning_for_Object_Detection_CVPR_2020_paper.pdf",
+      "status": "completed",
+      "elapsed": 12.01952075958252
+    },
+    {
+      "filename": "He_PVN3D_A_Deep_Point-Wise_3D_Keypoints_Voting_Network_for_6DoF_CVPR_2020_paper.pdf",
+      "status": "completed",
+      "elapsed": 12.022611856460571
+    },
+    {
+      "filename": "MSeg.pdf",
+      "status": "completed",
+      "elapsed": 12.02056336402893
+    },
+    {
+      "filename": "Mir_Learning_to_Transfer_Texture_From_Clothing_Images_to_3D_Humans_CVPR_2020_paper.pdf",
+      "status": "completed",
+      "elapsed": 9.026064395904541
+    },
+    {
+      "filename": "Niemeyer2020CVPR.pdf",
+      "status": "completed",
+      "elapsed": 9.138294696807861
+    },
+    {
+      "filename": "Patel_TailorNet_Predicting_Clothing_in_3D_as_a_Function_of_Human_CVPR_2020_paper.pdf",
+      "status": "completed",
+      "elapsed": 6.134043216705322
+    },
+    {
+      "filename": "Peng_IDA-3D_Instance-Depth-Aware_3D_Object_Detection_From_Stereo_Vision_for_Autonomous_CVPR_2020_paper.pdf",
+      "status": "completed",
+      "elapsed": 6.129683017730713
+    },
+    {
+      "filename": "Wang_ContourNet_Taking_a_Further_Step_Toward_Accurate_Arbitrary-Shaped_Scene_Text_CVPR_2020_paper.pdf",
+      "status": "completed",
+      "elapsed": 6.009114742279053
+    },
+    {
+      "filename": "Wang_BiFuse_Monocular_360_Depth_Estimation_via_Bi-Projection_Fusion_CVPR_2020_paper.pdf",
+      "status": "completed",
+      "elapsed": 15.057583570480347
+    },
+    {
+      "filename": "Zhang_Interactive_Object_Segmentation_With_Inside-Outside_Guidance_CVPR_2020_paper (1).pdf",
+      "status": "completed",
+      "elapsed": 9.15625262260437
+    },
+    {
+      "filename": "Zhang_Interactive_Object_Segmentation_With_Inside-Outside_Guidance_CVPR_2020_paper.pdf",
+      "status": "completed",
+      "elapsed": 9.105519533157349
+    },
+    {
+      "filename": "siamrcnn.pdf",
+      "status": "completed",
+      "elapsed": 9.07302737236023
+    },
+    {
+      "filename": "2002.10187v1.pdf",
+      "status": "completed",
+      "elapsed": 9.07291030883789
+    },
+    {
+      "filename": "2001.00309v3.pdf",
+      "status": "completed",
+      "elapsed": 9.12483024597168
+    },
+    {
+      "filename": "2003.07540v1.pdf",
+      "status": "completed",
+      "elapsed": 12.087042570114136
+    },
+    {
+      "filename": "2006.04356v1.pdf",
+      "status": "completed",
+      "elapsed": 6.011634349822998
+    },
+    {
+      "filename": "2003.09163v2.pdf",
+      "status": "completed",
+      "elapsed": 9.06875205039978
+    },
+    {
+      "filename": "2004.01547v1.pdf",
+      "status": "completed",
+      "elapsed": 9.165314674377441
+    },
+    {
+      "filename": "Cao_D2Det_Towards_High_Quality_Object_Detection_and_Instance_Segmentation_CVPR_2020_paper (1).pdf",
+      "status": "completed",
+      "elapsed": 9.022207736968994
+    },
+    {
+      "filename": "Cao_D2Det_Towards_High_Quality_Object_Detection_and_Instance_Segmentation_CVPR_2020_paper (2).pdf",
+      "status": "completed",
+      "elapsed": 9.027905225753784
+    },
+    {
+      "filename": "Cao_D2Det_Towards_High_Quality_Object_Detection_and_Instance_Segmentation_CVPR_2020_paper.pdf",
+      "status": "completed",
+      "elapsed": 9.066437005996704
+    },
+    {
+      "filename": "Chibane_Implicit_Functions_in_Feature_Space_for_3D_Shape_Reconstruction_and_CVPR_2020_paper.pdf",
+      "status": "completed",
+      "elapsed": 6.114748477935791
+    },
+    {
+      "filename": "Guo_AugFPN_Improving_Multi-Scale_Feature_Learning_for_Object_Detection_CVPR_2020_paper.pdf",
+      "status": "completed",
+      "elapsed": 12.077141761779785
+    },
+    {
+      "filename": "He_PVN3D_A_Deep_Point-Wise_3D_Keypoints_Voting_Network_for_6DoF_CVPR_2020_paper.pdf",
+      "status": "completed",
+      "elapsed": 12.017542123794556
+    },
+    {
+      "filename": "MSeg.pdf",
+      "status": "completed",
+      "elapsed": 12.050750255584717
+    },
+    {
+      "filename": "Mir_Learning_to_Transfer_Texture_From_Clothing_Images_to_3D_Humans_CVPR_2020_paper.pdf",
+      "status": "completed",
+      "elapsed": 9.045039653778076
+    },
+    {
+      "filename": "Niemeyer2020CVPR.pdf",
+      "status": "completed",
+      "elapsed": 9.015265703201294
+    },
+    {
+      "filename": "Patel_TailorNet_Predicting_Clothing_in_3D_as_a_Function_of_Human_CVPR_2020_paper.pdf",
+      "status": "completed",
+      "elapsed": 6.014113903045654
+    },
+    {
+      "filename": "Peng_IDA-3D_Instance-Depth-Aware_3D_Object_Detection_From_Stereo_Vision_for_Autonomous_CVPR_2020_paper.pdf",
+      "status": "completed",
+      "elapsed": 6.132848024368286
+    },
+    {
+      "filename": "Wang_ContourNet_Taking_a_Further_Step_Toward_Accurate_Arbitrary-Shaped_Scene_Text_CVPR_2020_paper.pdf",
+      "status": "completed",
+      "elapsed": 6.110150575637817
+    },
+    {
+      "filename": "Wang_BiFuse_Monocular_360_Depth_Estimation_via_Bi-Projection_Fusion_CVPR_2020_paper.pdf",
+      "status": "completed",
+      "elapsed": 12.048396348953247
+    },
+    {
+      "filename": "Zhang_Interactive_Object_Segmentation_With_Inside-Outside_Guidance_CVPR_2020_paper (1).pdf",
+      "status": "completed",
+      "elapsed": 9.080713510513306
+    },
+    {
+      "filename": "Zhang_Interactive_Object_Segmentation_With_Inside-Outside_Guidance_CVPR_2020_paper.pdf",
+      "status": "completed",
+      "elapsed": 9.017150163650513
+    },
+    {
+      "filename": "siamrcnn.pdf",
+      "status": "completed",
+      "elapsed": 12.08180856704712
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "test_type": "Local Batch Stress Test (mineru CLI) with DCGM Monitoring",
+  "environment": "Local Docker (mineru-api container)",
+  "gpu": "NVIDIA RTX 5880 Ada (46GB VRAM)",
+  "pdf_count": 22,
+  "num_rounds": 10,
+  "total_time_seconds": 90,
+  "avg_duration_seconds": 0,
+  "min_duration_seconds": 0,
+  "max_duration_seconds": 0,
+  "avg_throughput_files_per_min": ,
+  "dcgm_metrics_file": "dcgm_metrics.csv",
+  "rounds": [
+    {
+      "round": 1,
+      "duration_seconds": 0,
+      "files_processed": 0,
+      "throughput_files_per_min": 
+    }
+,
+    {
+      "round": 2,
+      "duration_seconds": 0,
+      "files_processed": 0,
+      "throughput_files_per_min": 
+    }
+,
+    {
+      "round": 3,
+      "duration_seconds": 0,
+      "files_processed": 0,
+      "throughput_files_per_min": 
+    }
+,
+    {
+      "round": 4,
+      "duration_seconds": 0,
+      "files_processed": 0,
+      "throughput_files_per_min": 
+    }
+,
+    {
+      "round": 5,
+      "duration_seconds": 0,
+      "files_processed": 0,
+      "throughput_files_per_min": 
+    }
+,
+    {
+      "round": 6,
+      "duration_seconds": 0,
+      "files_processed": 0,
+      "throughput_files_per_min": 
+    }
+,
+    {
+      "round": 7,
+      "duration_seconds": 0,
+      "files_processed": 0,
+      "throughput_files_per_min": 
+    }
+,
+    {
+      "round": 8,
+      "duration_seconds": 0,
+      "files_processed": 0,
+      "throughput_files_per_min": 
+    }
+,
+    {
+      "round": 9,
+      "duration_seconds": 0,
+      "files_processed": 0,
+      "throughput_files_per_min": 
+    }
+,
+    {
+      "round": 10,
+      "duration_seconds": 0,
+      "files_processed": 0,
+      "throughput_files_per_min": 
+    }
+
+  ]
+}
